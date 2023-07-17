@@ -1,6 +1,6 @@
 {
   "name": "@dogonis/github-hook",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "lib/index.js",
   "scripts": {
     "dev": "nodemon ./run/run.ts",
@@ -29,5 +29,5 @@
     "execMap": {
       "ts": "ts-node"
     }
-  },
+  }
 }
