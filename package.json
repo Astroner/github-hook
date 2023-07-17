@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon ./run/run.ts",
     "build": "npm run clear && tsc --project tsconfig.build.json",
-    "prepublishOnly": "npm build",
+    "prepublishOnly": "npm run build",
     "clear": "del lib"
   },
   "devDependencies": {
