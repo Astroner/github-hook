@@ -35,7 +35,12 @@ export const executeScripts = async (
         logger.log(chalk.italic.magenta(script))
         
         await new Promise<void>((resolve, reject) => {
-            const child = exec(script, { cwd, env: Object.fromEntries(Object.entries(message).map(([key, value]) => ["GH_" + key, value])) });
+            const child = exec(script, {
+                cwd, 
+                env: Object.fromEntries(
+                    Object.entries(message).map(([key, value]) => ["GH_" + key, value])
+                )
+            });
 
             child.stdout?.on('data', (a: Buffer) => logger.log(a.toString()))
             child.stderr?.on('data', (a: Buffer) => logger.error(a.toString()))
