@@ -1,6 +1,13 @@
 {
   "name": "@dogonis/github-hook",
-  "version": "1.0.2",
+  "version": "1.0.3",
+  "keywords": [
+    "github",
+    "github-webhook",
+    "github-hook",
+    "webhook",
+    "CI/CD"
+  ],
   "main": "lib/index.js",
   "scripts": {
     "dev": "nodemon ./run/run.ts",
