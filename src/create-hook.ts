@@ -49,8 +49,8 @@ export const createHook = (config: HookConfig) => {
         startedServer.once("listening", () => {
             const addr = startedServer.address() as AddressInfo;
             logger.group(chalk.bgGreen.black("GitHub hook started"));
-            logger.log(chalk.green(`Host: ${addr.address}`))
-            logger.log(chalk.green(`Port: ${addr.port}`))
+            logger.log(chalk.greenBright(`Host: ${addr.address}`))
+            logger.log(chalk.greenBright(`Port: ${addr.port}`))
             logger.groupEnd();
 
             server = startedServer;

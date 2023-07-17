@@ -74,15 +74,15 @@ export const createRouter = (config: RouterConfig, logger: Logger = new Logger()
             logger.ln();
         
             logger.group(chalk.bgGreen.black("Update for"));
-            if(project.label) logger.log(chalk.green(`Project: ${project.label}`));
-            logger.log(chalk.green(`Path: ${req.path}`));
-            logger.log(chalk.green(`Repo: ${message.repo}`));
+            if(project.label) logger.log(chalk.greenBright(`Project: ${project.label}`));
+            logger.log(chalk.greenBright(`Path: ${req.path}`));
+            logger.log(chalk.greenBright(`Repo: ${message.repo}`));
             logger.groupEnd();
 
             try {
                 logger.group(chalk.bgGreen.black("Executing scripts"));
                 await executeScripts(project.scripts, message, logger);
-                logger.log(chalk.green("Done"));
+                logger.log(chalk.greenBright("Done"));
             } catch (e) {
                 logger.error(chalk.red("Error: ") + e);
             } finally {
