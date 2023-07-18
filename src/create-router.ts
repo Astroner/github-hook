@@ -85,9 +85,8 @@ export const createRouter = (config: RouterConfig, logger: Logger = new Logger()
                 logger.log(chalk.green("Done"));
             } catch (e) {
                 logger.error(chalk.red("Error: ") + e);
-            } finally {
-                logger.groupEnd();
             }
+            logger.groupEnd();
             logger.ln();
         }
     })
