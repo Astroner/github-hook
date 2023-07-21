@@ -15,6 +15,7 @@ export interface Project {
     projectPath?: string;
     scripts: GHScript;
     label?: string;
+    envs?: Record<string, string>;
 }
 
 export interface RouterConfig {
@@ -70,7 +71,7 @@ export const createRouter = (config: RouterConfig, logger: Logger = new Logger()
                 pushAuthor: data.pusher.name,
             };
 
-            const messageDict = Object.fromEntries(
+            const GHEnvs = Object.fromEntries(
                 Object.entries(message).map(([key, value]) => ["GH_" + key, value])
             )
             
@@ -84,7 +85,7 @@ export const createRouter = (config: RouterConfig, logger: Logger = new Logger()
 
             try {
                 logger.group(chalk.bgGreen.black("Executing scripts"));
-                await executeScripts(project.scripts, logger, message, messageDict);
+                await executeScripts(project.scripts, logger, message, GHEnvs, project.envs);
                 logger.log(chalk.green("Done"));
             } catch (e) {
                 logger.error(chalk.red("Error: ") + e);

@@ -49,7 +49,7 @@ const hook = createHook({
 
 hook.start(4040);
 ```
-The code above starts express server on port 4040 that will listen for post requests with path "/", which can be specified with **projectPath** for each project and **hookPath** to specify root path for all of them. In this example we use same path for all the projects, but we can filter hook calls with **repos** and **branches** properties. **label** property just specifies project label in logs and **ghSecurityKey** specifies GitHub hook security key.
+The code above starts express server on port 4040 that will listen for post requests with path "/", which can be specified with **projectPath** for each project and **hookPath** to specify root path for all of them. In this example we use same path for all the projects, but we can filter hook calls with **repos** and **branches** properties. **label** property just specifies project label in logs, **ghSecurityKey** specifies GitHub hook security key and **envs** specifies envs that will be passed to all the scripts in the projects. 
 
 The complete project type:
 ```ts
@@ -60,6 +60,7 @@ interface Project {
     projectPath?: string;
     scripts: GHScript;
     label?: string;
+    envs?: Record<string, string>;
 }
 ```
 

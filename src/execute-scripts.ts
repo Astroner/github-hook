@@ -8,7 +8,8 @@ export const executeScripts = async (
     scripts: GHScript,
     logger: Logger,
     message: GHMessage,
-    handlerEnv: Record<string, string>,
+    ghEnvs: Record<string, string>,
+    projectEnvs?: Record<string, string>,
 ) => {
     const api: GHHandlerAPI = {
         log: message => logger.log(message),
@@ -19,7 +20,7 @@ export const executeScripts = async (
         for(let i = 0; i < scripts.length; i++) {
             logger.setPrefix(chalk.magenta(`[${i}]`) + " ")
             try {
-                await executeScripts(scripts[i], logger, message, handlerEnv);
+                await executeScripts(scripts[i], logger, message, ghEnvs, projectEnvs);
             } catch (e) {
                 throw e;
             } finally {
@@ -36,6 +37,13 @@ export const executeScripts = async (
         
         logger.log(chalk.italic.magenta(script))
         if(cwd) logger.log(chalk.magenta("CWD:") + " " + chalk.magenta.italic(cwd))
+        if(projectEnvs) {
+            logger.log(chalk.magenta("Project envs:"));
+            for(const key in projectEnvs)
+                if(projectEnvs.hasOwnProperty(key)) {
+                    logger.log(chalk.magenta(`  ${key}: ${projectEnvs[key]}`))
+                }
+        }
         if(providedEnv) {
             logger.log(chalk.magenta("Custom envs:"));
             for(const key in providedEnv)
@@ -50,7 +58,8 @@ export const executeScripts = async (
                 env: Object.assign(
                     {},
                     providedEnv,
-                    handlerEnv,
+                    ghEnvs,
+                    projectEnvs,
                 )
             });
 
