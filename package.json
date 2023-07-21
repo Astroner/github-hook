@@ -1,6 +1,6 @@
 {
   "name": "@dogonis/github-hook",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "license": "MIT",
   "keywords": [
     "github",
@@ -9,6 +9,7 @@
     "webhook",
     "CI/CD"
   ],
+  "readme": "README.md",
   "main": "lib/index.js",
   "scripts": {
     "dev": "nodemon ./run/run.ts",
@@ -20,6 +21,7 @@
     "type": "git",
     "url": "https://github.com/Astroner/github-hook"
   },
+  "homepage": "https://github.com/Astroner/github-hook#readme",
   "dependencies": {
     "chalk": "4.1.2",
     "express": "^4.18.2"
