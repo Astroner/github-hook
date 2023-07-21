@@ -6,8 +6,9 @@ import { GHHandlerAPI, GHMessage, GHScript } from "./types";
 
 export const executeScripts = async (
     scripts: GHScript,
-    message: GHMessage,
     logger: Logger,
+    message: GHMessage,
+    handlerEnv: Record<string, string>,
 ) => {
     const api: GHHandlerAPI = {
         log: message => logger.log(message),
@@ -18,7 +19,7 @@ export const executeScripts = async (
         for(let i = 0; i < scripts.length; i++) {
             logger.setPrefix(chalk.magenta(`[${i}]`) + " ")
             try {
-                await executeScripts(scripts[i], message, logger);
+                await executeScripts(scripts[i], logger, message, handlerEnv);
             } catch (e) {
                 throw e;
             } finally {
@@ -31,14 +32,25 @@ export const executeScripts = async (
     } else {
         const script = typeof scripts === "string" ? scripts : scripts.script;
         const cwd = typeof scripts === "string" ? undefined : scripts.cwd;
+        const providedEnv = typeof scripts === "string" ? undefined : scripts.env ?? undefined;
         
         logger.log(chalk.italic.magenta(script))
+        if(cwd) logger.log(chalk.magenta("CWD:") + " " + chalk.magenta.italic(cwd))
+        if(providedEnv) {
+            logger.log(chalk.magenta("Custom envs:"));
+            for(const key in providedEnv)
+                if(providedEnv.hasOwnProperty(key)) {
+                    logger.log(chalk.magenta(`  ${key}: ${providedEnv[key]}`))
+                }
+        }
         
         await new Promise<void>((resolve, reject) => {
             const child = exec(script, {
                 cwd, 
-                env: Object.fromEntries(
-                    Object.entries(message).map(([key, value]) => ["GH_" + key, value])
+                env: Object.assign(
+                    {},
+                    providedEnv,
+                    handlerEnv,
                 )
             });
 

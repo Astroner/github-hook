@@ -69,7 +69,10 @@ export const createRouter = (config: RouterConfig, logger: Logger = new Logger()
                 lastCommitMessage: data.head_commit.message,
                 pushAuthor: data.pusher.name,
             };
-            
+
+            const messageDict = Object.fromEntries(
+                Object.entries(message).map(([key, value]) => ["GH_" + key, value])
+            )
             
             logger.ln();
         
@@ -81,7 +84,7 @@ export const createRouter = (config: RouterConfig, logger: Logger = new Logger()
 
             try {
                 logger.group(chalk.bgGreen.black("Executing scripts"));
-                await executeScripts(project.scripts, message, logger);
+                await executeScripts(project.scripts, logger, message, messageDict);
                 logger.log(chalk.green("Done"));
             } catch (e) {
                 logger.error(chalk.red("Error: ") + e);

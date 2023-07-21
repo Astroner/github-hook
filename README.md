@@ -10,13 +10,18 @@ yarn add @dogonis/github-hook
 ```
 
 # Table of content
+ - [Description](#description)
+ - [Usage](#usage)
+     - [Basic usage](#basic-usage)
+     - [JS code](#js-code)
+     - [Commands](#commands)
 
 # Description
 This lib is just a wrapper around simple express server so it is really easy to add the lib to your existing express projects.
 The package provides simple and clean API to run scripts based on GitHub webhook calls
 
 # Usage
-Basic usage:
+## Basic usage
 ```ts
 import { createHook } from "@dogonis/github-hook"
 
@@ -46,12 +51,24 @@ hook.start(4040);
 ```
 The code above starts express server on port 4040 that will listen for post requests with path "/", which can be specified with **projectPath** for each project and **hookPath** to specify root path for all of them. In this example we use same path for all the projects, but we can filter hook calls with **repos** and **branches** properties. **label** property just specifies project label in logs and **ghSecurityKey** specifies GitHub hook security key.
 
+The complete project type:
+```ts
+interface Project {
+    ghSecurityKey?: string;
+    repos?: string[];
+    branches?: string[];
+    projectPath?: string;
+    scripts: GHScript;
+    label?: string;
+}
+```
+
 **scripts** property specifies all the scripts that will be executed after correct hook call.
 Scripts are executed one by one starting from the first element. Execution will be stopped if one of the scripts returned an error.
 Basically, **scripts** is an array of functions, strings and objects. 
 
 ## JS code
-To execute custom JS code add a function to **scripts** array. This function will be called with two arguments: GitHub message and Handler api.
+To execute custom JS code add a function to the **scripts** array. This function will be called with two arguments: GitHub message and Handler api.
  - **GHMessage** contains message from GitHub:
    ```ts
     type GHMessage = {
@@ -71,4 +88,18 @@ To execute custom JS code add a function to **scripts** array. This function wil
    ```
    It is preferable to use provided log/error functions over **console.** methods to properly fit them into hook logs
 
-# API
+## Commands
+To execute console command add string or object to the **scripts** array.
+ - String represents single command in the console
+ - Object allows command execution with additional parameters
+   ```ts
+    type Script = {
+        script: string; // Command to execute
+        cwd?: string; // cwd for the script
+        env?: Record<string, string>; // env variable to be passed
+    }
+   ```
+**GHMessage** will be passed to the script as envs with prefix **GH_**. For example, the code below will log repo name to the console
+```bash
+echo $GH_repo
+```

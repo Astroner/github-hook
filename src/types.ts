@@ -30,6 +30,7 @@ export type GHHandler = (message: GHMessage, api: GHHandlerAPI) => Promise<void>
 export type Script = {
     script: string;
     cwd?: string;
+    env?: Record<string, string>;
 }
 
 export type GHScript = string | Script | GHHandler | Array<string | Script | GHHandler>;
