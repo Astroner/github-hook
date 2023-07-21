@@ -22,7 +22,13 @@ interface StartFunction {
     (port: number, host: string): Promise<HookAddress>
 }
 
-export const createHook = (config: HookConfig) => {
+export interface GHHook {
+    start: StartFunction;
+    getExpressApp(): express.Application;
+    stop(): Promise<void>;
+}
+
+export const createHook = (config: HookConfig): GHHook => {
     const { hookPath = "/", ...routerConfig } = config;
     const app = express();
     const logger = new Logger();

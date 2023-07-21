@@ -15,6 +15,9 @@ yarn add @dogonis/github-hook
      - [Basic usage](#basic-usage)
      - [JS code](#js-code)
      - [Commands](#commands)
+ - [API](#api)
+     - [Hook](#hook)
+     - [Router](#router)
 
 # Description
 This lib is just a wrapper around simple express server so it is really easy to add the lib to your existing express projects.
@@ -104,3 +107,51 @@ To execute console command add string or object to the **scripts** array.
 ```bash
 echo $GH_repo
 ```
+
+# API
+## Hook
+**createHook()** returns **GHHook** interface
+```ts
+interface GHHook {
+    start: StartFunction;
+    getExpressApp(): express.Application;
+    stop(): Promise<void>;
+}
+```
+ - **start()** method starts the express server and returns Promise containing server address
+   ```ts
+    type HookAddress = {
+        port: number;
+        host: string;
+        family: string;
+    }
+
+    interface StartFunction {
+        (port?: number): Promise<HookAddress>
+        (port: number, host: string): Promise<HookAddress>
+    }
+   ```
+ - **getExpressApp()** returns express application
+ - **stop()** stops the server
+
+## Router
+**createRouter()** returns configured express Router
+```ts
+import express from "express"
+import { createRouter } from "@dogonis/github-hook"
+
+const app = express();
+
+const hookRouter = createRouter({
+    projects: [
+        {
+            scripts: (data, api) => api.log(data.repo)
+        }
+    ]
+});
+
+app.use("/hook", hookRouter);
+
+app.listen(3000);
+``` 
+This function is useful if you want to integrate GitHub hook into your existing express project.
