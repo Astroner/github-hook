@@ -1,2 +1,2 @@
 export { createRouter, RouterConfig } from "./create-router";
-export { createHook, HookConfig } from "./create-hook";
+export { createHook, HookConfig, GHHook } from "./create-hook";
