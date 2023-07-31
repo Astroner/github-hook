@@ -100,7 +100,7 @@ To execute console command add string or object to the **scripts** array.
     type Script = {
         script: string; // Command to execute
         cwd?: string; // cwd for the script
-        env?: Record<string, string>; // env variable to be passed
+        envs?: Record<string, string>; // env variable to be passed
     }
    ```
 **GHMessage** will be passed to the script as envs with prefix **GH_**. For example, the code below will log repo name to the console

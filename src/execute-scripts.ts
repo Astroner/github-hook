@@ -33,7 +33,7 @@ export const executeScripts = async (
     } else {
         const script = typeof scripts === "string" ? scripts : scripts.script;
         const cwd = typeof scripts === "string" ? undefined : scripts.cwd;
-        const providedEnv = typeof scripts === "string" ? undefined : scripts.env ?? undefined;
+        const providedEnv = typeof scripts === "string" ? undefined : scripts.envs ?? undefined;
         
         logger.log(chalk.italic.magenta(script))
         if(cwd) logger.log(chalk.magenta("CWD:") + " " + chalk.magenta.italic(cwd))
