@@ -40,7 +40,7 @@ export const createHook = (config: HookConfig): GHHook => {
     const start: StartFunction = (
         firstArg?: number | string,
         secondArg?: string,
-    ) => new Promise((resolve) => {
+    ) => new Promise((resolve, reject) => {
         const port = typeof firstArg === "number" ? firstArg : null;
         const host = typeof firstArg === "string" ? firstArg : typeof secondArg === "string" ? secondArg : null;
         
@@ -66,6 +66,8 @@ export const createHook = (config: HookConfig): GHHook => {
                 family: addr.family,
             })
         })
+
+        startedServer.once('error', reject);
     })
 
     return {
