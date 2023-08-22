@@ -33,6 +33,15 @@ export const createHook = (config: HookConfig): GHHook => {
     const app = express();
     const logger = new Logger();
 
+    app.use((req, res, next) => {
+        try {
+            decodeURIComponent(req.path);
+            next();
+        } catch(e) {
+            res.status(400).send();
+        }
+    })
+
     app.use(hookPath, createRouter(routerConfig, logger));
 
     let server: Server | null = null;
@@ -60,6 +69,8 @@ export const createHook = (config: HookConfig): GHHook => {
             logger.groupEnd();
 
             server = startedServer;
+            startedServer.removeListener('error', reject);
+            
             resolve({
                 port: addr.port,
                 host: addr.address,
