@@ -1,5 +1,4 @@
 import * as crypto from "crypto";
-import { exec } from "child_process";
 
 import { Router } from "express";
 
